@@ -1,0 +1,43 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.0'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'com.bmuschko.tomcat'
+
+sourceCompatibility = 1.6
+version = '0.1.0'
+war.baseName = 'stormpath-webapp-tutorial'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'com.stormpath.sdk', name: 'stormpath-servlet-plugin', version: '1.0.RC9.2'
+    compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+    runtime group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
+
+    def tomcatVersion = '7.0.57'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+    tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
+        exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+    }
+}
+
+tomcatRun.contextPath = '/'
+tomcatRunWar.contextPath = '/'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '
+}
